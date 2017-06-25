@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Visor Simple OpenLayers</title>
+	<link rel="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.12/theme/default/style.min.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.12/OpenLayers.min.js"></script>
+
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key= AIzaSyAWGV-uEDtw1I-Oo3jOEaWhd9rTifR_0VE &callback=initMap"
+  type="text/javascript"></script>
+  	<script type = "text/javascript" src="http://maps.stamen.com/js/tile.stamen.js"></script>
+	<style type="text/css">
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+		}
+		.cabecera{
+			height: 50px;
+			background-color: darkblue;
+		}
+		.cabecera h2{
+			color: #fff;
+			margin-top: 0;
+		}
+		#mapa{
+			height: 450px;
+			width: 600px;
+			border: solid 3px darkblue;
+		}
+		
+	</style>
+	<script type="text/javascript">
+		var init = function(){
+			var proyeccion = new OpenLayers.Projection("EPSG:900913"); //EPSG:900913
+			var controlNavegacion = new OpenLayers.Control.Navigation();
+			var controlZoom = new OpenLayers.Control.PanZoomBar(); // Zoom
+			// Propiedades del objeto Map
+			var propiedades = {
+				projection: proyeccion,
+				units: 'm',
+				controls: [controlNavegacion, controlZoom]
+			};
+			
+			//Creación de una instancia de la clase Map
+			var map = new OpenLayers.Map("mapa", propiedades);	
+			
+			// Capa OSM
+			var layerOSM = new OpenLayers.Layer.OSM();
+			map.addLayer(layerOSM);
+			
+			// Capa Google
+			var layerGoogleSatelital = new OpenLayers.Layer.Google("Google Satelital",{type:google.maps.MapTypeId.SATELLITE});
+			var layerGoogleHibrido = new OpenLayers.Layer.Google("Google Hidrido",{type:google.maps.MapTypeId.HYBRID});
+			var layerGoogleTerrain = new OpenLayers.Layer.Google("Google Terrain",{type:google.maps.MapTypeId.TERRAIN});
+			map.addLayers([layerGoogleHibrido, layerGoogleSatelital, layerGoogleTerrain]);
+			
+			// Control de cambio de Capas
+			var controlCapas = new OpenLayers.Control.LayerSwitcher();
+			map.addControl(controlCapas);
+
+			// control de posicion del cursor
+			var controlCursor = new OpenLayers.Control.MousePosition();
+			map.addControl(controlCursor);
+
+			/// Capa consumiendo servicio WMS
+			var nombreWMS = "Límites departamentales";
+			var urlWMS = "http://geo.gob.bo/geoserver/wms";
+			var propiedadesWMS = {
+				layers: 'universidades:id_aymara',
+				transparent: true
+			};
+			var layerDepartamentosWMS = new OpenLayers.Layer.WMS(nombreWMS, urlWMS, propiedadesWMS);
+			map.addLayer(layerDepartamentosWMS);
+
+			// Configuración para mostrar la región de Bolivia
+			// Lon: -64.819336, Lat: -17.379999
+			var LonLat = new OpenLayers.LonLat(-64.819336, -17.379999);
+			var zoom = 5;
+			var LonLatTransformado = LonLat.transform(
+				new OpenLayers.Projection("EPSG:4326"),
+				map.getProjection() // new OpenLayers.Projection("EPSG:900913")
+			);
+			map.setCenter(LonLatTransformado, zoom);
+
+
+			// control mini Mapa
+			var controlMiniMapa = new OpenLayers.Control.OverviewMap();
+			map.addControl(controlMiniMapa);
+
+			// capa Stamen
+			var layerStamen = new OpenLayers.Layer.Stamen("toner-lite");
+			map.addLayer(layerStamen);
+
+			// capa MapBOX
+			LayerMapBox = new OpenLayers.Layer.XYZ('MapBox', [
+		    "http://b.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/${z}/${x}/${y}.png",
+        	"http://c.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/${z}/${x}/${y}.png",
+        	"http://d.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/${z}/${x}/${y}.png"
+		    ], 
+		    {
+        		sphericalMercator: true, //tileSize: new OpenLayers.Size([512, 512]),
+        		wrapDateLine: true,
+    			numZoomLevels: 19
+    		});
+    		map.addLayer(LayerMapBox);
+
+			//capas utilizando servicios web wms (web map servicio)
+			var departamentos = new OpenLayers.Layer.WMS(
+				"Departamentos de Bolivia", //nombre del layer
+				"http://geo.gob.bo/geoserver/wms", //url de donde consume el servicio
+				{
+						layers: 'fondos:departamento1',
+						transparent: true
+				}
+			);
+			map.addLayer(departamentos);
+		}
+		// Cargamos la función init, para desplegar el mapa
+		window.onload = init;
+	</script>
+</head>
+<body>
+	<div class="cabecera">
+		<h2>Visor Simple OpenLayers</h2>
+	</div>
+	<div id="mapa"></div>
+</body>
+</html>
