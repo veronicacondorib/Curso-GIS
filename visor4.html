@@ -3,13 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title>Visor Simple OpenLayers</title>
+
 	<link rel="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.12/theme/default/style.min.css" />
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.12/OpenLayers.min.js"></script>
 
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key= AIzaSyAWGV-uEDtw1I-Oo3jOEaWhd9rTifR_0VE &callback=initMap"
-  type="text/javascript"></script>
+  	type="text/javascript"></script>
+
   	<script type = "text/javascript" src="http://maps.stamen.com/js/tile.stamen.js"></script>
+	
 	<style type="text/css">
 		html, body {
 			height: 100%;
@@ -74,6 +77,32 @@
 			var layerDepartamentosWMS = new OpenLayers.Layer.WMS(nombreWMS, urlWMS, propiedadesWMS);
 			map.addLayer(layerDepartamentosWMS);
 
+			// Mapa Eolico
+			var layerEolico = new OpenLayers.layer.WMS(
+				"Mapa Eolico",
+				"http://172.16.4.121:8080/geoserver/wms",
+				{
+					layers: 'curso-gis:EOLICO',
+					transparent: true
+				}
+			);
+			map.addLayer(layerEolico);
+
+			//ejemplo capa con Json
+			var layerJson = new OpenLayers.Layer.Vector(
+				"Capa Uyuni-json",
+				{
+					projection: new OpenLayers.Projection("EPSG:4326"),
+					strategies: [new OpenLayers.Strategy.Fixed()],
+					protocol: new OpenLayers.Protocol.HTTP({
+						url: './salar_uyuni.json',
+						format: new OpenLayers.Format.GeoJSON()
+					})
+					
+				}
+				);
+			map.addLayer(layerJson);
+			
 			// Configuración para mostrar la región de Bolivia
 			// Lon: -64.819336, Lat: -17.379999
 			var LonLat = new OpenLayers.LonLat(-64.819336, -17.379999);
