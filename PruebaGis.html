@@ -1,0 +1,375 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>GIS BOLIVIA</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=elAPIGeneradoporGoogle"> </script>
+	<script src=”http://maps.google.com/maps/api/js?v=3&sensor=false”></script>
+	
+	<script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
+	<script src="leaflet-plugins-1.9.3\layer\tile\Google.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=elAPIGeneradoporGoogle"> </script>
+	
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWGV-uEDtw1I-Oo3jOEaWhd9rTifR_0VE"
+		  	type="text/javascript"></script>
+
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		
+	<style type="text/css">
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-color: gray;
+		}
+		.cabecera{
+			height: 50px;
+			background-color: lime;
+		}
+		.cabecera h1{
+			color: white;
+			font-family: Ravie;
+			margin-top: 0;
+			text-align: center;
+
+		}
+		#mapa{
+			height: 500px;
+			width: 100%;
+			border: solid 3px green;
+
+		}
+		
+	</style>
+	<script type="text/javascript">
+	 var init = function(){
+	 	var map = new L.Map('mapa', { 
+	 		center: new L.LatLng(-17.379999,-64.819336), 
+	 		zoom: 5, 
+	 		attributionControl:true, 
+	 		zoomControl:true, 
+	 		minZoom:1
+	 	});
+	 	    
+	    	    
+	    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	  	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+	  	var osm = new L.TileLayer(osmUrl, {
+	  		minZoom: 1, 
+	  		maxZoom: 21, 
+	  		attribution: osmAttrib
+	  	});
+	    map.addLayer(osm);
+	    
+	    L.control.scale().addTo(map);
+	    
+	    //creacion de iconos para los marcadores
+		var lpIcon = L.icon({iconUrl: 'Lp.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});   
+    	var chIcon = L.icon({iconUrl: 'Chsq.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var cbIcon = L.icon({iconUrl: 'Cbba.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var scIcon = L.icon({iconUrl: 'Sc.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var ptIcon = L.icon({iconUrl: 'Pts.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var orIcon = L.icon({iconUrl: 'Or.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var pdIcon = L.icon({iconUrl: 'Pnd.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var bnIcon = L.icon({iconUrl: 'Bn.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+    	var tjIcon = L.icon({iconUrl: 'Tj.png', iconSize: [30,20], shadowUrl:'sombra.png', shadowSize: [35.10], iconAnchor: [15,10], shadowAnchor: [4,27]});
+
+	    //adicion de  marcador
+	 	var markerLP = L.marker([-16.489689,-68.11929359999999], {icon: lpIcon}).bindPopup('Capital: Nuestra Señora de La Paz').addTo(map);
+	 	var markerSC = L.marker([-17.8145819,-63.15608529999997], {icon: scIcon}).bindPopup('Capital: Santa Cruz de la Sierra').addTo(map);
+	 	var markerCB = L.marker([-17.4139766,-66.16532239999998], {icon: cbIcon}).bindPopup('Capital: Cochabamba').addTo(map);
+	 	var markerBN = L.marker([-14.3782747,-65.09577919999998], {icon: bnIcon}).bindPopup('Capital: Trinidad').addTo(map);
+	 	var markerPN = L.marker([-10.7988901,-66.99880109999998], {icon: pdIcon}).bindPopup('Capital: Cobija').addTo(map);
+	 	var markerOR = L.marker([-18.5711579,-67.7615983], {icon: orIcon}).bindPopup('Capital: Oruro').addTo(map);
+	 	var markerPT = L.marker([-20.624713,-66.99880109999998], {icon: ptIcon}).bindPopup('Capital: Potosi').addTo(map);
+	 	var markerTJ = L.marker([-21.521604,-64.72898659999998], {icon: tjIcon}).bindPopup('Capital: Tarija').addTo(map);
+	 	var markerCH = L.marker([-19.0195852,-65.26196149999998], {icon: chIcon}).bindPopup('Capital: Sucre').addTo(map);
+
+
+	    var wmsLayer1= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'fondos:departamento1',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer2= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'mdpdd:Minas',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer3= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'sernap:areasprotegidas_nacionales2017',
+	        format: 'image/png',
+	        transparent: true
+	    });
+
+	    var wmsLayer4= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'mdhye:SOLAR',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer5= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'igm:ESTACIONES_HIDROLOGICAS',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer6= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'mdpdd:vegetacion',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    map.addLayer(wmsLayer1);
+	    //map.addLayer(wmsLayer2);
+	    //map.addLayer(wmsLayer3);
+	    
+	    //variable para la capa satelital de google
+		//var ggl = new L.Google('SATELLITE');
+		//map.addLayer(ggl);
+
+		//funcion json
+	    function onEachFeature(feature, layer) {
+  		if (feature.properties && feature.properties.name) {
+     	var popupContent = "<p>Salar de Uyuni: " + feature.properties.name + "</p>";
+     	layer.bindPopup(popupContent);
+  			};
+		};
+
+		function style(feature) {
+	   	return {
+	     weight: 2,
+	     opacity: 1,
+	     color: 'white',
+	     dashArray: '3',
+	     fillOpacity: 0.7,
+	     	fillColor: '#FEB24C'
+ 		  };
+		};
+
+		// JSON
+	    var salar = new $.getJSON("salar_uyuni.json", function(data){
+   		L.geoJson(data, {
+      		style: style,
+      		//onEachFeature: onEachFeature
+   			}).bindPopup('Salar de Uyuni').addTo(map);
+		});
+
+	    var ReservaChaco = new $.getJSON("reservaChaco.json", function(data){
+   		L.geoJson(data, {
+      		style: style,
+      		//onEachFeature: onEachFeature
+   			}).bindPopup('Reserva del Chaco').addTo(map);
+		});
+
+	    var base = {
+	    	"Base OpenStreetMap": osm,
+	    	//"Google Satelital": ggl,
+	    };
+	    superpuestas = {
+	    	"Límites departamentales Bolivia":wmsLayer1,
+	    	"Minas":wmsLayer2,
+	    	"Areas Protegidas":wmsLayer3,
+	    	"Mapa Solar Bolivia":wmsLayer4,
+	    	"Estaciones Hidrologicas":wmsLayer5,
+	    	"Vegetacion":wmsLayer6,
+	    	    	
+
+	    };
+
+	    L.control.layers(base, superpuestas).addTo(map);
+	 }
+	 window.onload = init;
+
+	</script>
+</head>
+<body>
+	<div class="cabecera">
+		<h1>GIS BOLIVIA</h1>
+	</div>
+	<div id="mapa"></div>
+	
+</body>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>GIS BOLIVIA</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.css" />
+	<script src="leaflet-plugins-1.9.3\layer\tile\Google.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWGV-uEDtw1I-Oo3jOEaWhd9rTifR_0VE"
+	  	type="text/javascript"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=elAPIGeneradoporGoogle"> </script>
+	<script src=”http://maps.google.com/maps/api/js?v=3&sensor=false”></script>
+	<script src=”Google.js”></script>
+	
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	
+
+
+
+	
+	<style type="text/css">
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-color: gray;
+		}
+		.cabecera{
+			height: 50px;
+			background-color: lime;
+		}
+		.cabecera h1{
+			color: white;
+			font-family: comic;
+			margin-top: 0;
+			text-align: center;
+
+		}
+		#mapa{
+			height: 500px;
+			width: 100%;
+			border: solid 3px green;
+
+		}
+		
+	</style>
+	<script type="text/javascript">
+	 var init = function(){
+	 	var map = new L.Map('mapa', { 
+	 		center: new L.LatLng(-17.379999,-64.819336), 
+	 		zoom: 5, 
+	 		attributionControl:true, 
+	 		zoomControl:true, 
+	 		minZoom:1
+	 	});
+	 	    
+	    //var host = "http://200.168.0.111";
+	    
+	    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	  	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+	  	var osm = new L.TileLayer(osmUrl, {
+	  		minZoom: 1, 
+	  		maxZoom: 19, 
+	  		attribution: osmAttrib
+	  	});
+	    map.addLayer(osm);
+	    
+	    L.control.scale().addTo(map);
+	    //var ggl = new L.Google ('ROADMAP');
+	    //map.addLayer(ggl);
+
+
+	    
+	    //adicion de  marcador
+	 	var markerLP = L.marker([-16.489689,-68.11929359999999]).bindPopup('La Paz').addTo(map);
+	 	var markerSC = L.marker([-17.8145819,-63.15608529999997]).bindPopup('Santa Cruz').addTo(map);
+	 	var markerCB = L.marker([-17.4139766,-66.16532239999998]).bindPopup('Cochabamba').addTo(map);
+	 	var markerBN = L.marker([-14.3782747,-65.09577919999998]).bindPopup('Beni').addTo(map);
+	 	var markerPN = L.marker([-10.7988901,-66.99880109999998]).bindPopup('Pando').addTo(map);
+	 	var markerOR = L.marker([-18.5711579,-67.7615983]).bindPopup('Oruro').addTo(map);
+	 	var markerPT = L.marker([-20.624713,-66.99880109999998]).bindPopup('Potosi').addTo(map);
+	 	var markerTJ = L.marker([-21.521604,-64.72898659999998]).bindPopup('Tarija').addTo(map);
+	 	var markerCH = L.marker([-19.0195852,-65.26196149999998]).bindPopup('Sucre').addTo(map);
+
+
+	    var wmsLayer1= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'fondos:departamento1',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer2= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'mdpdd:Minas',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer3= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'sernap:areasprotegidas_nacionales2017',
+	        format: 'image/png',
+	        transparent: true
+	    });
+
+	    var wmsLayer4= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'mdhye:SOLAR',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer5= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'igm:ESTACIONES_HIDROLOGICAS',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    var wmsLayer6= L.tileLayer.wms("http://geo.gob.bo/geoserver/wms", {
+	        layers: 'nasa:altura_vegetacion_2014',
+	        format: 'image/png',
+	        transparent: true
+	    });
+	    map.addLayer(wmsLayer1);
+	    //map.addLayer(wmsLayer2);
+	    //map.addLayer(wmsLayer3);
+	    
+	    function onEachFeature(feature, layer) {
+  		if (feature.properties && feature.properties.name) {
+     	var popupContent = "<p>Salar de Uyuni: " + feature.properties.name + "</p>";
+     	layer.bindPopup(popupContent);
+  			};
+		};
+
+		function style(feature) {
+	   	return {
+	     weight: 2,
+	     opacity: 1,
+	     color: 'white',
+	     dashArray: '3',
+	     fillOpacity: 0.7,
+	     	fillColor: '#FEB24C'
+ 		  };
+		};
+
+	    var salar = new $.getJSON("salar_uyuni.json", function(data){
+   		L.geoJson(data, {
+      		style: style,
+      		onEachFeature: onEachFeature
+   			}).addTo(map);
+		});
+
+	    var base = {
+	    	"CAPA BASE": osm
+	    };
+	    superpuestas = {
+	    	"Límites departamentales Bolivia":wmsLayer1,
+	    	"Minas":wmsLayer2,
+	    	"Areas Protegidas":wmsLayer3,
+	    	"Mapa Solar Bolivia":wmsLayer4,
+	    	"Estaciones Hidrologicas":wmsLayer5,
+	    	"Vegetacion":wmsLayer6,
+	    	
+
+	    };
+
+	    L.control.layers(base, superpuestas).addTo(map);
+	 }
+	 window.onload = init;
+	 
+
+	 
+
+	</script>
+</head>
+<body>
+	<div class="cabecera">
+		<h1>GIS BOLIVIA</h1>
+	</div>
+	<div id="mapa"></div>
+	
+</body>
+>>>>>>> b8e278a58a8ca9075b7f6b6a120218d3fa90c052
+</html>
